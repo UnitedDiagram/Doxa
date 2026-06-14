@@ -1,0 +1,411 @@
+/* Sell-side equity research report PDF styling.
+   Conventions follow Goldman/MS/JPM-style institutional research:
+   - Sans-serif body, navy accent
+   - Letter page, 0.75" margins
+   - Running header/footer with page numbers
+   - Cover page is page 1 with no header/footer
+*/
+
+@page {
+    size: Letter;
+    margin: 0.75in 0.75in 0.85in 0.75in;
+
+    @top-left {
+        content: string(report-ticker) " — " string(report-company);
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 8pt;
+        color: #1B3A6B;
+        font-weight: 600;
+        border-bottom: 0.5pt solid #1B3A6B;
+        padding-bottom: 3pt;
+        width: 100%;
+    }
+
+    @top-right {
+        content: string(report-type);
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 8pt;
+        color: #555;
+        border-bottom: 0.5pt solid #1B3A6B;
+        padding-bottom: 3pt;
+    }
+
+    @bottom-left {
+        content: "Doxa Research";
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 7.5pt;
+        color: #888;
+    }
+
+    @bottom-center {
+        content: string(report-date);
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 7.5pt;
+        color: #888;
+    }
+
+    @bottom-right {
+        content: "Page " counter(page) " of " counter(pages);
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 7.5pt;
+        color: #888;
+    }
+}
+
+@page :first {
+    margin: 0.5in 0.5in 0.5in 0.5in;
+
+    @top-left { content: none; }
+    @top-right { content: none; }
+    @bottom-left { content: none; }
+    @bottom-center { content: none; }
+    @bottom-right { content: none; }
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 9.5pt;
+    line-height: 1.45;
+    color: #222;
+}
+
+/* Cover page */
+.cover {
+    page: first;
+    page-break-after: always;
+    string-set:
+        report-ticker attr(data-ticker),
+        report-company attr(data-company),
+        report-type attr(data-type),
+        report-date attr(data-date);
+}
+
+.cover-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 8pt;
+    border-bottom: 2pt solid #1B3A6B;
+    margin-bottom: 16pt;
+}
+
+.cover-firm {
+    font-size: 14pt;
+    font-weight: 700;
+    color: #1B3A6B;
+    letter-spacing: 0.5pt;
+}
+
+.cover-type {
+    font-size: 9pt;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 1pt;
+    font-weight: 600;
+}
+
+.cover-title-block {
+    margin: 24pt 0 18pt 0;
+}
+
+.cover-ticker {
+    font-size: 36pt;
+    font-weight: 700;
+    color: #1B3A6B;
+    line-height: 1.0;
+    margin: 0;
+}
+
+.cover-company {
+    font-size: 16pt;
+    color: #444;
+    margin-top: 4pt;
+    font-weight: 400;
+}
+
+.cover-sector {
+    font-size: 9.5pt;
+    color: #888;
+    margin-top: 2pt;
+    font-style: italic;
+}
+
+.cover-grid {
+    display: flex;
+    gap: 16pt;
+    margin-top: 18pt;
+}
+
+.cover-grid > .rating-box {
+    flex: 1.1;
+}
+
+.cover-grid > .key-stats {
+    flex: 1;
+}
+
+/* Rating box */
+.rating-box {
+    background: #1B3A6B;
+    color: #fff;
+    padding: 14pt 16pt;
+    border-radius: 2pt;
+}
+
+.rating-box .rating-label {
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: 1pt;
+    opacity: 0.75;
+    margin-bottom: 2pt;
+}
+
+.rating-box .rating-value {
+    font-size: 28pt;
+    font-weight: 700;
+    line-height: 1.0;
+    margin-bottom: 12pt;
+}
+
+.rating-box .rating-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4pt 0;
+    border-top: 0.5pt solid rgba(255, 255, 255, 0.25);
+    font-size: 9pt;
+}
+
+.rating-box .rating-row .label {
+    opacity: 0.8;
+}
+
+.rating-box .rating-row .value {
+    font-weight: 600;
+}
+
+.rating-box .upside.pos { color: #6BD49A; }
+.rating-box .upside.neg { color: #F0848C; }
+
+/* Key stats panel */
+.key-stats {
+    border: 1pt solid #D5DBE6;
+    border-radius: 2pt;
+    padding: 12pt 14pt;
+}
+
+.key-stats h3 {
+    font-size: 9pt;
+    text-transform: uppercase;
+    letter-spacing: 1pt;
+    color: #1B3A6B;
+    margin: 0 0 8pt 0;
+    padding-bottom: 4pt;
+    border-bottom: 0.5pt solid #1B3A6B;
+}
+
+.key-stats .stat-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9pt;
+    padding: 3pt 0;
+    border-bottom: 0.25pt solid #EAEDF3;
+}
+
+.key-stats .stat-row:last-child { border-bottom: none; }
+
+.key-stats .stat-row .label { color: #666; }
+.key-stats .stat-row .value { font-weight: 600; color: #222; }
+
+/* Analyst block */
+.cover-analyst {
+    margin-top: 18pt;
+    padding: 10pt 12pt;
+    background: #F4F6FB;
+    border-left: 3pt solid #1B3A6B;
+    font-size: 9pt;
+    color: #333;
+}
+
+.cover-analyst .name {
+    font-weight: 700;
+    color: #1B3A6B;
+}
+
+/* Cover summary teaser */
+.cover-summary {
+    margin-top: 16pt;
+    font-size: 10pt;
+    line-height: 1.5;
+    color: #333;
+}
+
+.cover-summary h3 {
+    font-size: 9pt;
+    text-transform: uppercase;
+    letter-spacing: 1pt;
+    color: #1B3A6B;
+    border-bottom: 0.5pt solid #1B3A6B;
+    padding-bottom: 4pt;
+    margin-bottom: 6pt;
+}
+
+/* Cover compliance footer */
+.cover-compliance {
+    position: absolute;
+    bottom: 0.4in;
+    left: 0.5in;
+    right: 0.5in;
+    font-size: 7pt;
+    color: #888;
+    border-top: 0.5pt solid #CCC;
+    padding-top: 6pt;
+    line-height: 1.3;
+    text-align: justify;
+}
+
+/* Body section headers */
+h1 {
+    font-size: 18pt;
+    color: #1B3A6B;
+    font-weight: 700;
+    border-bottom: 2pt solid #1B3A6B;
+    padding-bottom: 4pt;
+    margin-top: 18pt;
+    margin-bottom: 10pt;
+    page-break-after: avoid;
+}
+
+h2 {
+    font-size: 13pt;
+    color: #1B3A6B;
+    font-weight: 700;
+    border-bottom: 1pt solid #1B3A6B;
+    padding-bottom: 2pt;
+    margin-top: 16pt;
+    margin-bottom: 8pt;
+    page-break-after: avoid;
+}
+
+h3 {
+    font-size: 11pt;
+    color: #2A4A7C;
+    font-weight: 700;
+    margin-top: 12pt;
+    margin-bottom: 5pt;
+    page-break-after: avoid;
+}
+
+h4 {
+    font-size: 10pt;
+    color: #333;
+    font-weight: 700;
+    margin-top: 10pt;
+    margin-bottom: 4pt;
+    page-break-after: avoid;
+}
+
+p {
+    margin: 0 0 6pt 0;
+    text-align: justify;
+}
+
+strong { color: #1B3A6B; }
+
+em { color: #444; }
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8pt 0 12pt 0;
+    font-size: 8.5pt;
+    page-break-inside: avoid;
+}
+
+th {
+    background: #1B3A6B;
+    color: #fff;
+    padding: 5pt 7pt;
+    text-align: left;
+    font-weight: 600;
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: 0.3pt;
+    border-bottom: 1pt solid #1B3A6B;
+}
+
+td {
+    padding: 4pt 7pt;
+    border-bottom: 0.5pt solid #E5E8ED;
+    vertical-align: top;
+}
+
+tbody tr:nth-child(even) {
+    background: #F7F9FC;
+}
+
+tbody tr:last-child td {
+    border-bottom: 1pt solid #1B3A6B;
+}
+
+/* Lists */
+ul, ol {
+    margin: 4pt 0 8pt 16pt;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 3pt;
+}
+
+/* Code / inline */
+code {
+    font-family: "Menlo", "Courier New", monospace;
+    font-size: 8.5pt;
+    background: #F4F6FB;
+    padding: 1pt 3pt;
+    border-radius: 1pt;
+    color: #1B3A6B;
+}
+
+pre {
+    background: #F4F6FB;
+    border-left: 2pt solid #1B3A6B;
+    padding: 6pt 8pt;
+    font-size: 8pt;
+    page-break-inside: avoid;
+}
+
+hr {
+    border: none;
+    border-top: 0.5pt solid #D5DBE6;
+    margin: 12pt 0;
+}
+
+blockquote {
+    border-left: 3pt solid #1B3A6B;
+    padding: 4pt 10pt;
+    margin: 8pt 0;
+    color: #444;
+    font-style: italic;
+    background: #F7F9FC;
+}
+
+/* Disclosures section */
+.disclosures {
+    margin-top: 24pt;
+    page-break-before: always;
+    font-size: 8pt;
+    color: #555;
+    line-height: 1.4;
+}
+
+.disclosures h2 {
+    font-size: 12pt;
+    color: #1B3A6B;
+}
+
+.disclosures p {
+    margin-bottom: 5pt;
+    text-align: justify;
+}
